@@ -1,0 +1,24 @@
+#!/bin/sh
+. /etc/rc.common
+
+StartService() {
+        ConsoleMessage "IPFW Start"
+        /sbin/ipfw -f -q flush
+        #Insert your ipfw rules here using the format of:
+        # /sbin/ipfw -f -q add <rule number> deny ip from <CIDR notation> to any in
+        # SEE man ipfw for more info
+        
+        /sbin/ipfw -f -q add 65535 allow ip from any to any in
+}
+
+StopService() {
+        ConsoleMessage "IPFW Stop"
+        /sbin/ipfw -f -q flush
+}
+
+RestartService() {
+        StopService
+        StartService
+}
+
+RunService "$1"
